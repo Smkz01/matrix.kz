@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Чекер остатков — лист для печати</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+  :root { --ink: #16161f; --ink-2: #53536a; --muted: #8a8a9c; --accent: #4a45b8;
+          --accent-bg: #ececfb; --line: #d8d8e4; color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #e9e9ef; color: var(--ink);
+    font-family: "Golos Text", "Segoe UI", system-ui, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  .toolbar {
+    max-width: 210mm; margin: 0 auto; padding: 14px 16px;
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    font-size: 14px; color: var(--ink-2);
+  }
+  .toolbar button {
+    font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+    background: var(--accent); color: #fff; border: none; border-radius: 9px; padding: 9px 16px;
+  }
+
+  .sheet {
+    width: 210mm; min-height: 297mm; margin: 0 auto 24px; background: #fff;
+    padding: 18mm 16mm 14mm; box-shadow: 0 4px 24px rgba(20,20,35,.14);
+    display: flex; flex-direction: column;
+  }
+
+  .eyebrow {
+    font-size: 11pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  h1 {
+    font-family: Bitter, Georgia, serif; font-size: 34pt; line-height: 1.05;
+    margin: 4mm 0 3mm; text-wrap: balance;
+  }
+  .lead { font-size: 13pt; color: var(--ink-2); margin: 0; max-width: 150mm; line-height: 1.45; }
+
+  .qrblock {
+    display: flex; gap: 10mm; align-items: center; margin: 9mm 0 7mm;
+    border: 2px solid var(--accent); border-radius: 6mm; padding: 8mm;
+  }
+  .qrbox { background: #fff; flex: none; line-height: 0; }
+  .qrbox img, .qrbox canvas { display: block; width: 58mm; height: 58mm; }
+  .qrtext h2 { font-family: Bitter, Georgia, serif; font-size: 17pt; margin: 0 0 3mm; }
+  .qrtext p { font-size: 12pt; margin: 0 0 3mm; color: var(--ink-2); line-height: 1.45; }
+  .url {
+    font-size: 11.5pt; font-weight: 700; color: var(--accent);
+    background: var(--accent-bg); border-radius: 3mm; padding: 3mm 4mm;
+    display: inline-block; word-break: break-all;
+  }
+
+  .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 2mm; }
+  .step { border: 1px solid var(--line); border-radius: 4mm; padding: 6mm; }
+  .step h3 {
+    font-family: Bitter, Georgia, serif; font-size: 13pt; margin: 0 0 3mm;
+    display: flex; align-items: center; gap: 3mm;
+  }
+  .step h3 span {
+    font-family: "Golos Text", sans-serif; font-size: 9pt; font-weight: 700;
+    background: var(--accent); color: #fff; border-radius: 2mm; padding: 1mm 2.5mm;
+  }
+  .step ol { margin: 0; padding-left: 5mm; font-size: 11pt; line-height: 1.5; }
+  .step li { margin-bottom: 1.5mm; }
+  .step li:last-child { margin-bottom: 0; }
+
+  .what { margin-top: 7mm; border-top: 2px solid var(--line); padding-top: 5mm; }
+  .what h3 { font-family: Bitter, Georgia, serif; font-size: 13pt; margin: 0 0 3mm; }
+  .what ul { margin: 0; padding-left: 5mm; font-size: 11pt; line-height: 1.55; color: var(--ink-2); }
+  .what b { color: var(--ink); }
+
+  footer {
+    margin-top: auto; padding-top: 6mm; border-top: 1px solid var(--line);
+    font-size: 9.5pt; color: var(--muted); display: flex; justify-content: space-between; gap: 6mm;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet { width: auto; min-height: auto; margin: 0; box-shadow: none; padding: 12mm 12mm 8mm; }
+    @page { size: A4 portrait; margin: 8mm; }
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" id="printBtn">Печать листа</button>
+    <span>Формат A4. Повесьте в подсобке или отдайте новому сотруднику в первый день.</span>
+  </div>
+
+  <div class="sheet">
+    <div class="eyebrow">Askona Kazakhstan · розница</div>
+    <h1>Чекер остатков<br>в твоём телефоне</h1>
+    <p class="lead">Покупатель спрашивает «а есть такой диван в сером?» — за пять секунд видно,
+       в каком салоне он есть и сколько свободно к продаже. Без 1С и без звонков коллегам.</p>
+
+    <div class="qrblock">
+      <div class="qrbox"><div id="qr"></div></div>
+      <div class="qrtext">
+        <h2>Наведи камеру телефона</h2>
+        <p>Откроется чекер. Добавь его на экран — дальше открывается одной иконкой, как приложение.</p>
+        <span class="url" id="url">https://zhanclaude.github.io/Pricecheker/</span>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <h3><span>iPhone</span> Safari</h3>
+        <ol>
+          <li>Отсканируй код камерой, открой ссылку в Safari.</li>
+          <li>Нажми «Поделиться» внизу экрана — квадрат со стрелкой вверх.</li>
+          <li>Выбери «На экран «Домой»» → «Добавить».</li>
+        </ol>
+      </div>
+      <div class="step">
+        <h3><span>Android</span> Chrome</h3>
+        <ol>
+          <li>Отсканируй код камерой, открой ссылку в Chrome.</li>
+          <li>Нажми три точки в правом верхнем углу.</li>
+          <li>Выбери «Установить приложение» или «Добавить на главный экран».</li>
+        </ol>
+      </div>
+      <div class="step">
+        <h3><span>Ноутбук</span> Chrome, Edge</h3>
+        <ol>
+          <li>Открой ссылку в браузере.</li>
+          <li>Нажми зелёную кнопку «Установить приложение» в шапке чекера.</li>
+          <li>Ярлык появится на рабочем столе и в меню «Пуск».</li>
+        </ol>
+      </div>
+      <div class="step">
+        <h3><span>Важно</span> Каждый день</h3>
+        <ol>
+          <li>Остатки обновляются раз в день, дата стоит в шапке.</li>
+          <li>Появилась плашка «Есть свежие остатки» — нажми «Обновить».</li>
+          <li>Последнюю единицу перед обещанием клиенту перепроверь у руководителя.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="what">
+      <h3>Что показывает чекер</h3>
+      <ul>
+        <li><b>Свободный остаток</b> — то, что можно продать сейчас: без резерва под чужие заказы.</li>
+        <li><b>В пути</b> — приход ожидается, продаём только под заказ.</li>
+        <li><b>Экспозиция</b> — образец с витрины, отдельная вкладка; продаётся по решению директора салона.</li>
+        <li><b>Вся серия сразу</b> — ищи как говорит покупатель: «серта денвер», «диван магни», «кровать пола серый».</li>
+      </ul>
+    </div>
+
+    <footer>
+      <span>Ссылка внутренняя — не выкладывайте её в соцсети и на сторонние сайты.</span>
+      <span>Вопросы — руководителю розницы</span>
+    </footer>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  const URL_TEXT = "https://zhanclaude.github.io/Pricecheker/";
+  document.getElementById("url").textContent = URL_TEXT;
+  if (window.QRCode) {
+    new QRCode(document.getElementById("qr"), {
+      text: URL_TEXT, width: 560, height: 560,
+      colorDark: "#16161f", colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+  document.getElementById("printBtn").addEventListener("click", () => window.print());
+</script>
+</body>
+</html>
